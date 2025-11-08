@@ -23,7 +23,7 @@ An interactive canvas animation where shapes rotate, bounce, and suffer forever 
 ## 🛠️ Controls
 
 - **Default Button** - Reset to 800x600 size
-- **Reset Button** - Set playground to full window size
+- **Reset Button** - Set playground to full window size and reset shapes to 100
 - **Width Slider** - Adjust horizontal size
 - **Height Slider** - Adjust vertical size
 - **+/- Buttons** - Fine-tune dimensions (hold for continuous adjustment)
