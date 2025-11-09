@@ -186,24 +186,24 @@ body {
 
 .size-display {
     position: fixed;
-    top: 150px;
-    left: 50%;
-    transform: translateX(-50%);
+    top: 10px;
+    left: 10px;
     display: flex;
     flex-direction: column;
     gap: 5px;
     z-index: 100;
-    text-align: center;
+    text-align: left;
 }
 
 .size-display div {
     color: white;
-    font-size: 16px;
+    font-size: 14px;
     font-weight: bold;
-    background-color: rgba(0, 0, 0, 0.5);
-    padding: 8px 16px;
+    background-color: rgba(0, 0, 0, 0.7);
+    padding: 6px 12px;
     border-radius: 5px;
     border: 1px solid rgba(255, 255, 255, 0.3);
+    white-space: nowrap;
 }
 
 #fireworks-canvas {
