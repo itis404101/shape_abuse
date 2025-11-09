@@ -206,6 +206,22 @@ body {
     white-space: nowrap;
 }
 
+#suffering-score {
+    background-color: rgba(255, 100, 0, 0.8) !important;
+    border: 2px solid #ff6600 !important;
+    font-size: 16px !important;
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0%, 100% {
+        box-shadow: 0 0 5px rgba(255, 100, 0, 0.5);
+    }
+    50% {
+        box-shadow: 0 0 20px rgba(255, 100, 0, 0.8);
+    }
+}
+
 #fireworks-canvas {
     display: block;
     background-color: #000;
