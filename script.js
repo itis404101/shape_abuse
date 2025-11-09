@@ -248,8 +248,8 @@ class FireworksAnimation {
         this.escapeAlert = document.getElementById('escape-alert');
         this.alertTimeout = null;
         this.speeds = [];
-        // Create 100 circles with random properties
-        this.createCircles(100);
+        // Create 10 circles with random properties
+        this.createCircles(10);
         
         // Setup button controls
         this.setupControls();
@@ -393,10 +393,10 @@ class FireworksAnimation {
             widthSlider.value = this.canvasWidth;
             heightSlider.value = this.canvasHeight;
             this.resizeCanvas();
-            // Clear all existing shapes and speeds, then reset to 100
+            // Clear all existing shapes and speeds, then reset to 10
             this.circles = [];
             this.speeds = [];
-            this.createCircles(100);
+            this.createCircles(10);
             this.updateSizeDisplay();
         });
     }
@@ -500,6 +500,61 @@ class FireworksAnimation {
         }, 100);
     }
     
+    // Check and handle collisions between shapes
+    handleCollisions() {
+        for (let i = 0; i < this.circles.length; i++) {
+            for (let j = i + 1; j < this.circles.length; j++) {
+                const circle1 = this.circles[i];
+                const circle2 = this.circles[j];
+                
+                // Calculate distance between centers
+                const dx = circle2.x - circle1.x;
+                const dy = circle2.y - circle1.y;
+                const distance = Math.sqrt(dx * dx + dy * dy);
+                const minDistance = circle1.size + circle2.size;
+                
+                // Check if circles are colliding
+                if (distance < minDistance) {
+                    // Calculate collision normal
+                    const nx = dx / distance;
+                    const ny = dy / distance;
+                    
+                    // Separate overlapping circles
+                    const overlap = minDistance - distance;
+                    const separationX = (overlap / 2) * nx;
+                    const separationY = (overlap / 2) * ny;
+                    
+                    circle1.x -= separationX;
+                    circle1.y -= separationY;
+                    circle2.x += separationX;
+                    circle2.y += separationY;
+                    
+                    // Get velocities
+                    const speed1 = this.speeds[i];
+                    const speed2 = this.speeds[j];
+                    
+                    // Calculate relative velocity
+                    const dvx = speed2.speedX - speed1.speedX;
+                    const dvy = speed2.speedY - speed1.speedY;
+                    
+                    // Calculate relative velocity in collision normal direction
+                    const dvn = dvx * nx + dvy * ny;
+                    
+                    // Do not resolve if velocities are separating
+                    if (dvn < 0) continue;
+                    
+                    // Apply impulse (elastic collision with equal mass)
+                    const impulse = dvn;
+                    
+                    speed1.speedX += impulse * nx;
+                    speed1.speedY += impulse * ny;
+                    speed2.speedX -= impulse * nx;
+                    speed2.speedY -= impulse * ny;
+                }
+            }
+        }
+    }
+    
     // Animation loop
     animate() {
         // Clear canvas with slight trail effect
@@ -510,6 +565,9 @@ class FireworksAnimation {
         this.ctx.strokeStyle = '#ffffff';
         this.ctx.lineWidth = 3;
         this.ctx.strokeRect(0, 0, this.playground.width, this.playground.height);
+        
+        // Handle collisions between shapes
+        this.handleCollisions();
         
         // Update and draw all circles
         this.circles.forEach((circle, index) => {
